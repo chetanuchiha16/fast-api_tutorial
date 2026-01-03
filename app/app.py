@@ -1,7 +1,8 @@
-from fastapi import FastAPI, HTTPException
-from app.schema import Post
+from fastapi import FastAPI, HTTPException, Form, File, UploadFile, Depends
+from app.schemas.schema import PostModel
 from contextlib import asynccontextmanager
-from app.db import create_db_and_tables
+from app.db import create_db_and_tables, get_async_session, AsyncSession, Post
+from sqlalchemy import select
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -10,32 +11,41 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-posts = {
-        1: {"title": "First Post", "content": "This is the first post."},
-        2: {"title": "Second Post", "content": "This is the second post."},
-        3: {"title": "Third Post", "content": "This is the third post."},
-        4: {"title": "Fourth Post", "content": "This is the fourth post."}
-}
+@app.post("/upload")
+async def upload_file(
+    caption: str = Form(""),
+    file: UploadFile = File(...),
+    session: AsyncSession = Depends(get_async_session),
+) -> PostModel:
 
-@app.get("/all-posts")
-def get_posts(limit: int = None):
-    if limit:
-        # return first `limit` posts as a dict
-        # print (posts.items())
-        return dict(list(posts.items())[:limit])
-    
-    return posts
+    post = Post(
+        caption=caption,
+        url="qewe",
+        file_type="image",
+        file_name=""
+    )
 
+    session.add(post)
+    await session.commit()
+    await session.refresh(post)
+    return post
 
-@app.get("/post/{post_id}")
-def get_post(post_id: int):
-    if post_id not in posts:
-        raise HTTPException(status_code=404, detail="post not found")
-    return posts[post_id]
+@app.get("/feed")
+async def get_feed(session:AsyncSession = Depends(get_async_session)) -> dict[str,list[PostModel]]:
+    result = await session.execute(select(Post).order_by(Post.created_at))
+    posts = result.scalars().all()
+    # posts = [row for row in result]
+    print(posts)
+    posts_data = []
+    for post in posts:
+        posts_data.append({
+            "id": post.id,
+            "caption": post.caption,
+            "url": post.url,
+            "file_type": post.file_type,
+            "file_name": post.file_name,
+            "created_at": post.created_at
+            
+        })
 
-@app.post("/posts") 
-def create_post(post: Post) -> Post:
-    return {
-        post.title,
-        post.content
-    }
+    return {"posts": posts_data}

@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from app.schemas.schema import ImageKitConfig
 
 class Settings(BaseSettings):
     POSTGRES_USER: str
@@ -13,6 +14,14 @@ class Settings(BaseSettings):
     @property
     def DATABASE_URI(self):
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+    
+    @property
+    def imagekit(self) -> ImageKitConfig:
+        return ImageKitConfig(
+            private_key = self.IMAGEkit_PRIVATE_KEY,
+            # public_key = self.IMAGEkit_PUBLIC_KEY,
+            url_endpoint = self.IMAGEkit_URL,
+        )
     
     model_config = SettingsConfigDict(env_file=".env")
 

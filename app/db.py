@@ -18,18 +18,19 @@ class Post(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     caption = Column( Text)
+    url = Column(String, nullable=False)
     file_type = Column(String, nullable=False)
     file_name = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc))
 
 engine = create_async_engine(DATABASE_URI)
 
-session_session_maker = async_sessionmaker(expire_on_commit=True)
+session_maker = async_sessionmaker(expire_on_commit=True, bind=engine)
 
 async def create_db_and_tables():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-async def create_sesson() -> AsyncGenerator[AsyncSession, None]:
-    async with session_session_maker() as session:
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with session_maker() as session:
         yield session
