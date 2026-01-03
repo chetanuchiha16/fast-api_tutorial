@@ -6,6 +6,9 @@ class Settings(BaseSettings):
     POSTGRES_SERVER: str
     POSTGRES_PORT: int
     POSTGRES_DB: str
+    IMAGEkit_PRIVATE_KEY:str
+    IMAGEkit_PUBLIC_KEY:str
+    IMAGEkit_URL:str
 
     @property
     def DATABASE_URI(self):

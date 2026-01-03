@@ -1,6 +1,14 @@
 from fastapi import FastAPI, HTTPException
 from app.schema import Post
-app = FastAPI()
+from contextlib import asynccontextmanager
+from app.db import create_db_and_tables
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_db_and_tables()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 
 posts = {
         1: {"title": "First Post", "content": "This is the first post."},
