@@ -10,5 +10,6 @@ class PostModel(BaseModel):
     id: UUID
     caption: str
     url :  str
+    file_type: str
     file_name : str
     created_at : Any
