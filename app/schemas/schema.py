@@ -14,7 +14,7 @@ class BaseSchema(BaseModel):
 
 class PostCreateSchema(BaseSchema):
     pass
-class PostModel(BaseModel):
+class PostModel(BaseSchema):
     id: UUID
     created_at : Any
 

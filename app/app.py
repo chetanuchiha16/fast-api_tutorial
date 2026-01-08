@@ -29,7 +29,7 @@ async def upload_file(
     
     return await post_crud.post(session, post)
 
-@app.get("/feed")
+@app.get("/feed", response_model=list[PostModel])
 async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session)):
     # result = await session.execute(select(Post).order_by(Post.created_at))
     # posts = result.scalars().all()
@@ -46,5 +46,5 @@ async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session))
     #         "created_at": post.created_at
             
     #     })
-    posts_data = await post_crud.get(session,5)
-    return {"posts": posts_data}
+    return await post_crud.get(session,limit)
+    # return {"posts": posts_data}

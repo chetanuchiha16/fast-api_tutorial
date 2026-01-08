@@ -13,6 +13,7 @@ class CrudBase[ModelType:Base, CreateSchemaType:BaseModel]:
     
     async def post(self, session:AsyncSession, object_in:CreateSchemaType) -> ModelType:
         object = object_in.model_dump()
+        print(f"modeldump{object} objectin {object_in}")
         obj = self.model(**object)
         session.add(obj)
         await session.commit()
