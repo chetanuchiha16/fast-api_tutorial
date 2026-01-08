@@ -1,9 +1,9 @@
 from app.crud.base import CrudBase
 from app.db import Post
-from app.schemas.schema import PostModel
+from app.schemas.schema import PostModel, PostCreateSchema
 
 
-class PostCrud(CrudBase[Post, PostModel]):
+class PostCrud(CrudBase[Post, PostCreateSchema]):
     pass
 
 post_crud = PostCrud(Post)

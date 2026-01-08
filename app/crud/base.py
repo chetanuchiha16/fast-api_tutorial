@@ -11,10 +11,10 @@ class CrudBase[ModelType:Base, CreateSchemaType:BaseModel]:
         response = await session.execute(select(self.model).limit(limit))
         return response.scalars().all()
     
-    async def post(self, session:AsyncSession, *, object_in:BaseModel) -> ModelType:
+    async def post(self, session:AsyncSession, object_in:CreateSchemaType) -> ModelType:
         object = object_in.model_dump()
         obj = self.model(**object)
         session.add(obj)
         await session.commit()
-        await session.refresh(self.model)
+        await session.refresh(obj)
         return obj

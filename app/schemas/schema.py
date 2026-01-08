@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from uuid import UUID
 from typing import Any
 class ImageKitConfig(BaseModel):
@@ -6,10 +6,16 @@ class ImageKitConfig(BaseModel):
     public_key: str
     url_endpoint: str
 
-class PostModel(BaseModel):
-    id: UUID
+class BaseSchema(BaseModel):
     caption: str
     url :  str
     file_type: str
     file_name : str
+
+class PostCreateSchema(BaseSchema):
+    pass
+class PostModel(BaseModel):
+    id: UUID
     created_at : Any
+
+    model_config = ConfigDict(from_attributes=True)

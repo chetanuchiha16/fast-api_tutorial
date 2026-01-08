@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Form, File, UploadFile, Depends
-from app.schemas.schema import PostModel
+from app.schemas.schema import PostModel, PostCreateSchema
 from contextlib import asynccontextmanager
 from app.db import create_db_and_tables, get_async_session, AsyncSession, Post
 from sqlalchemy import select
@@ -17,9 +17,9 @@ async def upload_file(
     caption: str = Form(""),
     file: UploadFile = File(...),
     session: AsyncSession = Depends(get_async_session),
-) -> PostModel:
+):
 
-    post = PostModel(
+    post = PostCreateSchema(
         caption=caption,
         url="qewe",
         file_type="image",
@@ -30,7 +30,7 @@ async def upload_file(
     return await post_crud.post(session, post)
 
 @app.get("/feed")
-async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session)) -> dict[str,list[PostModel]]:
+async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session)):
     # result = await session.execute(select(Post).order_by(Post.created_at))
     # posts = result.scalars().all()
     # # posts = [row for row in result]
