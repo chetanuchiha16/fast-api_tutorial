@@ -1,5 +1,5 @@
 from typing import Any
-from app.db import Base
+from app.db.db import Base
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from pydantic import BaseModel
