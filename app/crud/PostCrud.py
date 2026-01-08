@@ -1,5 +1,5 @@
 from app.crud.base import CrudBase
-from app.db.db import Post
+from app.db.posts import Post
 from app.schemas.schema import PostModel, PostCreateSchema
 
 

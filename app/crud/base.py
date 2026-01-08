@@ -7,11 +7,11 @@ class CrudBase[ModelType:Base, CreateSchemaType:BaseModel]:
     def __init__(self, model:type[ModelType]):
         self.model = model
 
-    async def get(self, session:AsyncSession, limit) -> list[ModelType]:
+    async def get(self, session:AsyncSession, limit: int) -> list[ModelType]:
         response = await session.execute(select(self.model).limit(limit))
         return response.scalars().all()
     
-    async def post(self, session:AsyncSession, object_in:CreateSchemaType) -> ModelType:
+    async def create(self, session:AsyncSession, object_in:CreateSchemaType) -> ModelType:
         object = object_in.model_dump()
         print(f"modeldump{object} objectin {object_in}")
         obj = self.model(**object)

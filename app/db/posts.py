@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Text, String, DateTime
 from datetime import datetime, timezone
-
-from uuid import UUID, uuid4
+from sqlalchemy.dialects.postgresql import UUID
+from uuid import uuid4
 from app.db.db import Base
 
 

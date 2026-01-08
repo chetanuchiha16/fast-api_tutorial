@@ -1,8 +1,8 @@
 from fastapi import APIRouter, UploadFile, Form, File, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.db import get_async_session
-from app.schemas.schema import PostCreateSchema
-from app.crud.PostCrud import post_crud, PostModel
+from app.schemas.schema import PostCreateSchema, PostModel
+from app.crud.PostCrud import post_crud
 
 router = APIRouter()
 
@@ -22,7 +22,7 @@ async def upload_file(
     )
 
     
-    return await post_crud.post(session, post)
+    return await post_crud.create(session, post)
 
 @router.get("/feed", response_model=list[PostModel])
 async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session)):
