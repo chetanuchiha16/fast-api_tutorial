@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.db import get_async_session
 from app.schemas.schema import PostCreateSchema, PostModel
 from app.crud.PostCrud import post_crud
-
+import uuid
 router = APIRouter()
 
 
@@ -41,5 +41,11 @@ async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session))
     #         "created_at": post.created_at
             
     #     })
-    return await post_crud.get(session,limit)
+    return await post_crud.list(session,limit)
     # return {"posts": posts_data}
+
+@router.delete("/delete", status_code=204)
+async def delete_feed(id:str, session:AsyncSession = Depends(get_async_session)):
+    id = uuid.UUID(id)
+    await post_crud.delete(session, id)
+    return None
