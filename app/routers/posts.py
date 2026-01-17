@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, Form, File, Depends
+from fastapi import APIRouter, UploadFile, Form, File, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.db import get_async_session
 from app.schemas.schema import PostCreateSchema, PostModel
@@ -47,5 +47,9 @@ async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session))
 @router.delete("/delete", status_code=204)
 async def delete_feed(id:str, session:AsyncSession = Depends(get_async_session)):
     id = uuid.UUID(id)
-    await post_crud.delete(session, id)
-    return None
+    deleted_post = await post_crud.delete(session, id)
+
+    if  not deleted_post:
+        raise HTTPException(404, detail=f"post {id} not found")
+        
+    return {"message": f"post Deleted successfully"}

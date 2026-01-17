@@ -28,7 +28,8 @@ class CrudBase[ModelType:Base, CreateSchemaType:BaseModel]:
     
     async def delete(self, session:AsyncSession, id:str) -> ModelType | None:
         obj = await self.get(session, id)
-        
-        session.delete(obj)
-        session.commit()
+        if not obj:
+            return None
+        await session.delete(obj)
+        await session.commit()
         return obj
