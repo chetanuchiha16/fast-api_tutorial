@@ -7,7 +7,7 @@ import uuid
 router = APIRouter()
 
 
-@router.post("/upload")
+@router.post("/upload", response_model=PostModel)
 async def upload_file(
     caption: str = Form(""),
     file: UploadFile = File(...),
@@ -20,7 +20,6 @@ async def upload_file(
         file_type="image",
         file_name="jkjjkj"
     )
-
     
     return await post_crud.create(session, post)
 
@@ -44,7 +43,7 @@ async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session))
     return await post_crud.list(session,limit)
     # return {"posts": posts_data}
 
-@router.delete("/delete", status_code=204)
+@router.delete("/delete", status_code=200)
 async def delete_feed(id:str, session:AsyncSession = Depends(get_async_session)):
     id = uuid.UUID(id)
     deleted_post = await post_crud.delete(session, id)
