@@ -12,7 +12,7 @@ class CrudBase[ModelType:Base, CreateSchemaType:BaseModel]:
     async def get(self, session:AsyncSession, id) -> ModelType:
         response = await session.execute(select(self.model).where(self.model.id == id))
         return response.scalars().first()
-
+    
     async def list(self, session:AsyncSession, limit: int) -> list[ModelType]:
         response = await session.execute(select(self.model).limit(limit))
         return response.scalars().all()
