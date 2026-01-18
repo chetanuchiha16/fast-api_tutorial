@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, String, DateTime
+from sqlalchemy import Column, Text, String, DateTime, ForeignKey
 from datetime import datetime, timezone
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
@@ -9,6 +9,7 @@ class Post(Base):
     __tablename__ = "post"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
+    user = Column(UUID(as_uuid=True), ForeignKey("user.id"), nullable=True)
     caption = Column( Text)
     url = Column(String, nullable=False)
     file_type = Column(String, nullable=False)

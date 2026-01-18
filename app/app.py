@@ -5,6 +5,7 @@ from app.db.db import create_db_and_tables
 from sqlalchemy import select
 from app.crud.post import post_crud
 from app.api import api_router
+from app.users import fastapi_users, auth_backend, current_active_users
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -14,3 +15,4 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(api_router, prefix="/api")
+app.include_router(fastapi_users.get_auth_router(backend=auth_backend), prefix="/auth/jwt", tags=["auth"])

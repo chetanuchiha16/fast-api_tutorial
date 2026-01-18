@@ -7,6 +7,8 @@ class Settings(BaseSettings):
     POSTGRES_SERVER: str
     POSTGRES_PORT: int
     POSTGRES_DB: str
+
+    AUTH_SECRET:str
     IMAGEkit_PRIVATE_KEY:str
     IMAGEkit_PUBLIC_KEY:str
     IMAGEkit_URL:str
@@ -14,6 +16,10 @@ class Settings(BaseSettings):
     @property
     def DATABASE_URI(self):
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+    
+    @property
+    def AUTH_SECRET(self):
+        return self.AUTH_SECRET
     
     @property
     def imagekit(self) -> ImageKitConfig:
