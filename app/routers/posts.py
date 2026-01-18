@@ -1,8 +1,8 @@
 from fastapi import APIRouter, UploadFile, Form, File, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.db import get_async_session
-from app.schemas.schema import PostCreateSchema, PostModel
-from app.crud.PostCrud import post_crud
+from app.schemas.post import PostCreateSchema, PostModel
+from app.crud.post import post_crud
 import uuid
 router = APIRouter()
 

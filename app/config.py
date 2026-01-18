@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from app.schemas.schema import ImageKitConfig
+from app.schemas.imagekit import ImageKitConfig
 
 class Settings(BaseSettings):
     POSTGRES_USER: str
