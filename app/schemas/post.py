@@ -10,6 +10,7 @@ class BaseSchema(BaseModel):
     file_name : str
 
 class PostCreateSchema(BaseSchema):
+    user_id: UUID
     pass
 class PostModel(BaseSchema):
     id: UUID
