@@ -49,13 +49,14 @@ async def get_feed(limit:int, session:AsyncSession = Depends(get_async_session),
 
 @router.delete("/delete", status_code=200, response_model=PostModel)
 async def delete_feed(id:uuid.UUID, session:AsyncSession = Depends(get_async_session), user: User = Depends(current_active_users)):
+    if user.id != deleted_post.user_id:
+        raise HTTPException(403, "You do not have permition to delete this post")
+    
     deleted_post = await post_crud.delete(session, id)
 
     if  not deleted_post:
         raise HTTPException(404, detail=f"post {id} not found")
     
-    if user.id != deleted_post.user_id:
-        raise HTTPException(403, "You do not have permition to delete this post")
         
     # return {"message": f"post Deleted successfully"}
     return deleted_post

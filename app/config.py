@@ -17,9 +17,9 @@ class Settings(BaseSettings):
     def DATABASE_URI(self):
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
     
-    @property
-    def AUTH_SECRET(self):
-        return self.AUTH_SECRET
+    # @property
+    # def AUTH_SECRET(self):
+    #     return self.AUTH_SECRET
     
     @property
     def imagekit(self) -> ImageKitConfig:
