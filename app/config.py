@@ -9,9 +9,9 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
 
     AUTH_SECRET:str
-    IMAGEkit_PRIVATE_KEY:str
-    IMAGEkit_PUBLIC_KEY:str
-    IMAGEkit_URL:str
+    IMAGEKIT_PRIVATE_KEY:str
+    IMAGEKIT_PUBLIC_KEY:str
+    IMAGEKIT_URL:str
 
     @property
     def DATABASE_URI(self):
@@ -24,9 +24,9 @@ class Settings(BaseSettings):
     @property
     def imagekit(self) -> ImageKitConfig:
         return ImageKitConfig(
-            private_key = self.IMAGEkit_PRIVATE_KEY,
-            # public_key = self.IMAGEkit_PUBLIC_KEY,
-            url_endpoint = self.IMAGEkit_URL,
+            private_key = self.IMAGEKIT_PRIVATE_KEY,
+            # public_key = self.IMAGEKIT_PUBLIC_KEY,
+            # url_endpoint = self.IMAGEKIT_URL,
         )
     
     model_config = SettingsConfigDict(env_file=".env")
